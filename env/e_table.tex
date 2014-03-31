@@ -1,0 +1,265 @@
+\setupTABLE[%
+    %frameoffset=.5\linewidth,
+    %backgroundoffset=\v!frame,
+    %framecolor=\s!black,
+    %width=\v!fit,
+    %height=\v!fit,
+    %autowidth=\v!yes,
+    %rulethickness=\linewidth,
+    %strut=\v!yes,
+    %autostrut=\v!no,
+    %
+    %color=,
+    style={\rmx},
+    headstyle={\rmx\bf},
+    %headcolor=,
+    %aligncharacter=\v!no,
+    %alignmentcharacter={,},
+    %option=, % \v!stretch
+    %header=,
+    %spaceinbetween=,
+    %maxwidth=8em,
+    %textwidth=\hsize,
+    split=yes,	% repeat
+    %splitoffset=0pt,
+    %distance=\zeropoint,           % individual column
+    %columndistance=\zeropoint,     % each column (whole table)
+    %leftmargindistance=\zeropoint, % whole table
+    %rightmargindistance=\zeropoint,% whole table
+    %left=,
+    %right=,
+    %setups=,
+    splitmethod=b%
+]
+\setupTABLE[header][
+    style={\rmx\bf},
+    background=color,
+    backgroundcolor=gray:1,
+]
+
+%%%%%%%%%%%%%%%%%%% ETD: enum / type / desc
+\def\startETD{\dodoubleempty\dostartETD}
+
+\long\def\dostartETD[#1][#2]#3\stopETD{%
+  \startlocalfootnotes
+  \bTABLE[option=stretch]
+  \bTABLEhead
+    \bTR[background=color,backgroundcolor=gray:1]
+        \bTH \ctype{#1} \eTH
+        \bTH #2 \eTH
+    \eTR
+  \eTABLEhead
+  \bTABLEbody
+    #3
+  \eTABLEbody
+  \eTABLE
+  \placelocalfootnotes[style=\rmx,before=,after=,]
+  \stoplocalfootnotes
+}
+
+\define[3]\clETDMulti{
+\bTR[background=color,backgroundcolor=gray:1]
+  \bTC #1 \eTC
+  \bTC \ctype{#2} \eTC
+\eTR
+\bTR
+  \bTC[nc=2]
+    \parindent2em
+    #3
+  \eTC
+\eTR
+}
+
+\define[3]\clETD{
+\bTR[background=color,backgroundcolor=gray:1]
+  \bTC \cenum{#1} \eTC
+  \bTC \ctype{#2} \eTC
+\eTR
+\bTR
+  \bTC[nc=2]
+    \parindent2em
+    #3
+  \eTC
+\eTR
+}
+%%%%%%%%%%%%%%%%%%% ED: enum / desc
+\def\startED{\dodoubleempty\dostartED}
+
+\long\def\dostartED[#1]#2\stopED{%
+  \startlocalfootnotes
+  \bTABLE[option=stretch]
+  \bTABLEhead
+    \bTR[background=color,backgroundcolor=gray:1]
+        \bTH #1 \eTH
+    \eTR
+  \eTABLEhead
+  \bTABLEbody
+    #2
+  \eTABLEbody
+  \eTABLE
+  \placelocalfootnotes[style=\rmx,before=,after=,]
+  \stoplocalfootnotes
+}
+
+\define[2]\clED{
+\bTR[background=color,backgroundcolor=gray:1]
+  \bTC \cenum{#1} \eTC
+\eTR
+\bTR
+  \bTC
+    \parindent2em
+    #2
+  \eTC
+\eTR
+}
+%%%%%%%%%%%%%%%%%%% OD: object / desc
+\def\startCLOD{\dodoubleempty\dostartCLOD}
+
+\long\def\dostartCLOD[#1][#2]#3\stopCLOD{%
+  \startlocalfootnotes
+  \bTABLE[option=stretch]
+  \bTABLEhead
+    \bTR[background=color,backgroundcolor=gray:1]
+        \bTH #1 \eTH
+        \bTH #2 \eTH
+    \eTR
+  \eTABLEhead
+  \bTABLEbody
+    #3
+  \eTABLEbody
+  \eTABLE
+  \placelocalfootnotes[style=\rmx,before=,after=,]
+  \stoplocalfootnotes
+}
+
+\define[2]\clOD{
+\bTR
+  \bTD #1 \eTD
+  \bTD
+    \parindent2em
+    #2 \eTD
+\eTR
+}
+\define[2]\clMD{
+\clOD{\cmacro{#1}}{#2}
+}
+%%%%%%%%%%%%%%%%%%% OO: object / object
+\def\startCLOO{\dodoubleargument\dostartCLOO}
+
+\long\def\dostartCLOO[#1][#2]#3\stopCLOO{%
+  \midaligned{
+  \bTABLE
+  \setupTABLE[c][each][align={middle,lohi}]
+  \bTABLEhead
+    \bTR[background=color,backgroundcolor=gray:1]
+        \bTH #1 \eTH
+        \bTH #2 \eTH
+    \eTR
+  \eTABLEhead
+  \bTABLEbody
+    #3
+  \eTABLEbody
+  \eTABLE
+  }
+}
+
+\define[2]\clOO{
+\bTR
+  \bTD #1 \eTD
+  \bTD #2 \eTD
+\eTR
+}
+
+% macro - macro
+\define[1]\clMM{
+\clOO{\cmacroemp{#1}}{\cmacroemp{CL_#1}}
+}
+
+% macro - macro for half
+\define[1]\clMMH{
+\clMM{HALF_#1}
+}
+
+% macro - macro for float
+\define[1]\clMMF{
+\clMM{FLT_#1}
+}
+
+% macro - macro for double
+\define[1]\clMMD{
+\clMM{DBL_#1}
+}
+
+% constant - math
+\define[2]\clCM{
+\clOO{\cmacroemp{#1}}{\math{#2}}
+}
+%%%%%%%%%%%%%%%%%%% FD: fuction / desc
+\def\startCLFD{\dostartCLFD}
+
+\long\def\dostartCLFD#1\stopCLFD{%
+  \startlocalfootnotes
+  \bTABLE[option=stretch]
+  \setuptyping[option=CLFUNC]
+
+  \bTABLEhead
+    \bTR[background=color,backgroundcolor=gray:1]
+        \bTH 函式 \eTH
+        \bTH 描述 \eTH
+    \eTR
+  \eTABLEhead
+  \bTABLEbody
+    #1
+  \eTABLEbody
+  \eTABLE
+  \placelocalfootnotes[style=\rmx,before=,after=,]
+  \stoplocalfootnotes
+}
+
+\define[1]\clFD{
+\bTR
+  \bTD \typebuffer[funcproto:#1] \eTD
+  \bTD \parindent2em\getbuffer[funcdesc:#1] \eTD
+\eTR
+}
+%%%%%%%%%%%%%%%%%%% FD: fuction / accuracy
+\def\startCLFA{\dostartCLFA}
+
+\long\def\dostartCLFA[#1][#2]#3\stopCLFA{%
+  \bTABLE
+  \setupTABLE[c][odd][align={flushright,lohi}]
+  \setupTABLE[c][even][align={flushleft,lohi}]
+  \bTABLEhead
+    \bTR[background=color,backgroundcolor=gray:1]
+        \bTH #1 \eTH
+        \bTH #2 \eTH
+    \eTR
+  \eTABLEhead
+  \bTABLEbody
+    #3
+  \eTABLEbody
+  \eTABLE
+}
+
+\define[2]\clFA{
+\bTR
+  \bTD #1 \eTD
+  \bTD #2 \eTD
+\eTR
+}
+
+% api
+\define[2]\clFAA{
+\bTR
+  \bTD \capi{#1} \eTD
+  \bTD #2 \eTD
+\eTR
+}
+
+% math
+\define[2]\clFAM{
+\bTR
+  \bTD \math{#1} \eTD
+  \bTD #2 \eTD
+\eTR
+}
